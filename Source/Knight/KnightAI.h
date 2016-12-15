@@ -15,6 +15,8 @@ enum class EAIState : uint8
 	AIS_Dead	UMETA(DisplayName = "Dead"),
 };
 
+class AKnightPatrolPoint;
+
 UCLASS()
 class KNIGHT_API AKnightAI : public ACharacter
 {
@@ -71,6 +73,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Range Attack")
 	USphereComponent* _playerRangeAttack;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Movement")
+	AKnightPatrolPoint* nextPoint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+	class UBehaviorTree* BehaviorTree;
+
 public:
 	UFUNCTION(BlueprintCallable, Category = "AI Infos")
 	int GetMaxLife() const;
@@ -81,4 +89,6 @@ public:
 	EAIState GetCurrentAIState() const;
 	UFUNCTION(BlueprintCallable, Category = "AI Infos")
 	void SetCurrentAIState(EAIState NewAIState);
+
+	FORCEINLINE class UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
 };

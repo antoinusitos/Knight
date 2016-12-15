@@ -2,6 +2,7 @@
 
 #include "Knight.h"
 #include "KnightAI.h"
+#include "KnightPatrolPoint.h"
 
 
 // Sets default values
@@ -39,6 +40,12 @@ void AKnightAI::BeginPlay()
 void AKnightAI::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
+
+	switch (_currentState)
+	{
+	case EAIState::AIS_Patrol :
+		break;
+	}
 
 }
 
