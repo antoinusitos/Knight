@@ -3,7 +3,8 @@
 #include "Knight.h"
 #include "KnightAI.h"
 #include "KnightPatrolPoint.h"
-
+#include "KnightAIController.h"
+#include "KnightPlayer.h"
 
 // Sets default values
 AKnightAI::AKnightAI()
@@ -19,6 +20,10 @@ AKnightAI::AKnightAI()
 	_playerRangeAttack = CreateDefaultSubobject<USphereComponent>(FName("Player Range Attack"));
 	_playerRangeAttack->SetupAttachment(GetCapsuleComponent());
 	_playerRangeAttack->SetSphereRadius(200.0f);
+
+	_attackSphere = CreateDefaultSubobject<USphereComponent>(FName("Player Attack Sphere"));
+	_attackSphere->SetupAttachment(GetCapsuleComponent());
+	_attackSphere->SetSphereRadius(50.0f);
 
 	Init();
 }
@@ -41,10 +46,14 @@ void AKnightAI::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
-	switch (_currentState)
+	if (!_canAttack)
 	{
-	case EAIState::AIS_Patrol :
-		break;
+		_currentAttackWait += DeltaTime;
+		if (_currentAttackWait >= _attackRate)
+		{
+			_canAttack = true;
+			_currentAttackWait = 0.0f;
+		}
 	}
 
 }
@@ -64,17 +73,30 @@ void AKnightAI::ReceiveDamage(int damage)
 
 bool AKnightAI::CanAttack() const
 {
-	return false;
+	return _canAttack;
 }
 
 void AKnightAI::Attack()
 {
-
+	if (_canAttack)
+	{
+		TArray<AActor*> player;
+		_attackSphere->GetOverlappingActors(player, TSubclassOf<ACharacter>());
+		for (int i = 0; i < player.Num(); ++i)
+		{
+			auto aPlayer = Cast<AKnightPlayer>(player[i]);
+			if (aPlayer)
+			{
+				aPlayer->PlayerTakeDamage(_attackAmount);
+			}
+		}
+		_canAttack = false;
+	}
 }
 
 bool AKnightAI::CanMove() const
 {
-	return false;
+	return _currentState != EAIState::AIS_Dead && _currentState != EAIState::AIS_Attack;
 }
 
 void AKnightAI::Init()
@@ -87,29 +109,44 @@ void AKnightAI::Init()
 	_walkingSpeed = 300.0f;
 	_runningSpeed = 600.0f;
 	GetCharacterMovement()->MaxWalkSpeed = _walkingSpeed;
+
+	_attackRate = 1.0f;
+	_currentAttackWait = 0.0f;
+	_canAttack = true;
+	_attackAmount = 30;
 }
 
 void AKnightAI::OnPlayerDetectedOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if(_currentState != EAIState::AIS_Follow)
+	if(_currentState != EAIState::AIS_Dead && _currentState != EAIState::AIS_Follow)
 	{
 		_currentState = EAIState::AIS_Follow;
 	}
+}
 
-
+void AKnightAI::OnPlayerDetectedOverlapEnd(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
+{
+	if (_currentState != EAIState::AIS_Dead && _currentState == EAIState::AIS_Follow)
+	{
+		_currentState = EAIState::AIS_Patrol;
+	}
 }
 
 void AKnightAI::OnPlayerRangeAttackOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (_currentState != EAIState::AIS_Attack)
+	if (_currentState != EAIState::AIS_Dead && _currentState != EAIState::AIS_Attack)
 	{
-		_currentState = EAIState::AIS_Attack;
+		if (_canAttack)
+		{
+			_currentState = EAIState::AIS_Attack;
+			//Attack();
+		}
 	}
 }
 
 void AKnightAI::OnPlayerRangeAttackOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (_currentState == EAIState::AIS_Attack)
+	if (_currentState != EAIState::AIS_Dead && _currentState == EAIState::AIS_Attack)
 	{
 		_currentState = EAIState::AIS_Follow;
 	}

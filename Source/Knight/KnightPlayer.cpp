@@ -293,3 +293,17 @@ void AKnightPlayer::SetCurrentPlayerState(EPlayerState NewPlayerState)
 {
 	_currentPlayerState = NewPlayerState;
 }
+
+void AKnightPlayer::PlayerTakeDamage(int amount)
+{
+	_currentLife -= amount;
+	if (_currentLife <= 0)
+	{
+		Die();
+	}
+}
+
+void AKnightPlayer::Die()
+{
+	_currentPlayerState = EPlayerState::PS_Dead;
+}

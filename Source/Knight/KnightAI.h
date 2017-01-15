@@ -36,7 +36,6 @@ public:
 
 private:
 	bool CanAttack() const;
-	void Attack();
 
 	bool CanMove() const;
 
@@ -49,9 +48,16 @@ private:
 	void OnPlayerDetectedOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
+	void OnPlayerDetectedOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UFUNCTION()
 	void OnPlayerRangeAttackOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
 	void OnPlayerRangeAttackOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	float _attackRate;
+	float _currentAttackWait;
+	bool _canAttack;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Movement")
@@ -79,6 +85,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 	class UBehaviorTree* BehaviorTree;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Attack Sphere")
+	USphereComponent* _attackSphere;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Attack")
+	int _attackAmount;
+
 public:
 	UFUNCTION(BlueprintCallable, Category = "AI Infos")
 	int GetMaxLife() const;
@@ -91,4 +103,7 @@ public:
 	void SetCurrentAIState(EAIState NewAIState);
 
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
+
+	UFUNCTION(BlueprintCallable, Category = "AI Attack")
+	void Attack();
 };

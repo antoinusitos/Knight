@@ -81,6 +81,8 @@ private:
 	void Run();
 	void StopRun();
 
+	void Die();
+
 	UPROPERTY(EditAnywhere, Category = "Player Movement")
 	float _staminaSpeedLoose;
 	UPROPERTY(EditAnywhere, Category = "Player Movement")
@@ -150,4 +152,6 @@ public:
 	EPlayerState GetCurrentPlayerState() const;
 	UFUNCTION(BlueprintCallable, Category = "Player Infos")
 	void SetCurrentPlayerState(EPlayerState NewPlayerState);
+
+	void PlayerTakeDamage(int amount);
 };
