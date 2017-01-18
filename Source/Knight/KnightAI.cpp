@@ -103,17 +103,21 @@ void AKnightAI::Init()
 {
 	_currentState = EAIState::AIS_Idle;
 
+	// stats
 	_maxLife = 100;
 	_currentLife = _maxLife;
 
+	// movment
 	_walkingSpeed = 300.0f;
 	_runningSpeed = 600.0f;
 	GetCharacterMovement()->MaxWalkSpeed = _walkingSpeed;
 
+	// attack
 	_attackRate = 1.0f;
 	_currentAttackWait = 0.0f;
 	_canAttack = true;
 	_attackAmount = 30;
+	_isAttacking = false;
 }
 
 void AKnightAI::OnPlayerDetectedOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -139,16 +143,34 @@ void AKnightAI::OnPlayerRangeAttackOverlapBegin(UPrimitiveComponent* OverlappedC
 		if (_canAttack)
 		{
 			_currentState = EAIState::AIS_Attack;
-			//Attack();
 		}
 	}
 }
 
 void AKnightAI::OnPlayerRangeAttackOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (_currentState != EAIState::AIS_Dead && _currentState == EAIState::AIS_Attack)
+	if (_currentState != EAIState::AIS_Dead && _currentState == EAIState::AIS_Attack && !_isAttacking)
 	{
 		_currentState = EAIState::AIS_Follow;
+	}
+}
+
+void AKnightAI::TestPlayerIsAround()
+{
+	_isAttacking = false;
+
+	TArray<AActor*> overlappingActors;
+	_playerDetection->GetOverlappingActors(overlappingActors, TSubclassOf<AKnightPlayer>());
+	TArray<AActor*> overlappingActorsToAttack;
+	_playerRangeAttack->GetOverlappingActors(overlappingActorsToAttack, TSubclassOf<AKnightPlayer>());
+
+	if (overlappingActors.Num() > 0 && overlappingActorsToAttack.Num() == 0)
+	{
+		_currentState = EAIState::AIS_Follow;
+	}
+	else if (overlappingActorsToAttack.Num() == 0)
+	{
+		_currentState = EAIState::AIS_Patrol;
 	}
 }
 

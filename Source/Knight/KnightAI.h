@@ -42,7 +42,7 @@ private:
 	// Initialize variables
 	void Init();
 
-	EAIState _currentState;
+	//EAIState _currentState;
 
 	UFUNCTION()
 	void OnPlayerDetectedOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -58,8 +58,13 @@ private:
 	float _attackRate;
 	float _currentAttackWait;
 	bool _canAttack;
+	bool _isAttacking;
+	float _rangeToAttack;
 
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI Movement")
+	EAIState _currentState;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Movement")
 	float _walkingSpeed;
 
@@ -106,4 +111,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "AI Attack")
 	void Attack();
+
+	UFUNCTION(BlueprintCallable, Category = "AI Attack")
+	void TestPlayerIsAround();
 };
