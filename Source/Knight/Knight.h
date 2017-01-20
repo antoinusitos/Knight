@@ -3,6 +3,6 @@
 #ifndef __KNIGHT_H__
 #define __KNIGHT_H__
 
-#include "EngineMinimal.h"
+#include "Engine.h"
 
 #endif

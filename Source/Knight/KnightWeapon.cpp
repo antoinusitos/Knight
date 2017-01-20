@@ -17,6 +17,9 @@ AKnightWeapon::AKnightWeapon()
 	_collisions = CreateDefaultSubobject<UBoxComponent>(FName("Collision"));
 	_collisions->SetupAttachment(_mesh);
 	
+	// set up a notification for when this component overlaps something  
+	_collisions->OnComponentBeginOverlap.AddDynamic(this, &AKnightWeapon::OnOverlapBegin);
+
 	EmptyActorHit();
 
 	Init();
@@ -27,8 +30,8 @@ void AKnightWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// set up a notification for when this component overlaps something  
-	_collisions->OnComponentBeginOverlap.AddDynamic(this, &AKnightWeapon::OnOverlapBegin);
+	/*// set up a notification for when this component overlaps something  
+	_collisions->OnComponentBeginOverlap.AddDynamic(this, &AKnightWeapon::OnOverlapBegin);*/
 }
 
 // Called every frame

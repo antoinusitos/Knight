@@ -20,6 +20,10 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	AKnightPatrolPoint* GetNextPoint();
+
+protected:
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Patrol Point")
 	AKnightPatrolPoint* nextPoint;
 };

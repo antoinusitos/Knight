@@ -26,3 +26,8 @@ void AKnightPatrolPoint::Tick( float DeltaTime )
 
 }
 
+AKnightPatrolPoint* AKnightPatrolPoint::GetNextPoint()
+{
+	return nextPoint;
+}
+

@@ -16,6 +16,8 @@ enum class EAIState : uint8
 };
 
 class AKnightPatrolPoint;
+class AKnightAIController;
+class AKnightPlayer;
 
 UCLASS()
 class KNIGHT_API AKnightAI : public ACharacter
@@ -61,6 +63,21 @@ private:
 	bool _isAttacking;
 	float _rangeToAttack;
 
+	AKnightPatrolPoint* _nextPoint;
+	void FindPatrolPoint();
+	FVector _destination;
+	AKnightAIController* _controller;
+	void MoveToDestinationPoint(const FVector& theDestination);
+	float _distToIdle;
+
+	float _timeToWait;
+	float _currentTimeToWait;
+
+	AKnightPlayer* _target;
+	bool isInRangeToAttack;
+
+
+// put here all the variable you want to change in BP
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI Movement")
 	EAIState _currentState;
@@ -84,9 +101,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Range Attack")
 	USphereComponent* _playerRangeAttack;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Movement")
-	AKnightPatrolPoint* nextPoint;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 	class UBehaviorTree* BehaviorTree;
 
@@ -109,6 +123,7 @@ public:
 
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
 
+	// call it in the animation
 	UFUNCTION(BlueprintCallable, Category = "AI Attack")
 	void Attack();
 
