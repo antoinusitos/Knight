@@ -35,6 +35,7 @@ void AKnightAI::BeginPlay()
 	
 	// set up a notification for when we detect the player
 	_playerDetection->OnComponentBeginOverlap.AddDynamic(this, &AKnightAI::OnPlayerDetectedOverlapBegin);
+	_playerDetection->OnComponentEndOverlap.AddDynamic(this, &AKnightAI::OnPlayerDetectedOverlapEnd);
 
 	// set up a notification for when we must face the player and attack him
 	_playerRangeAttack->OnComponentBeginOverlap.AddDynamic(this, &AKnightAI::OnPlayerRangeAttackOverlapBegin);
@@ -125,6 +126,11 @@ void AKnightAI::OnPlayerDetectedOverlapBegin(UPrimitiveComponent* OverlappedComp
 	if(_currentState != EAIState::AIS_Dead && _currentState != EAIState::AIS_Follow)
 	{
 		_currentState = EAIState::AIS_Follow;
+		UE_LOG(LogTemp, Warning, TEXT("back to follow"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("back to follow other"));
 	}
 }
 
@@ -133,6 +139,11 @@ void AKnightAI::OnPlayerDetectedOverlapEnd(UPrimitiveComponent * OverlappedComp,
 	if (_currentState != EAIState::AIS_Dead && _currentState == EAIState::AIS_Follow)
 	{
 		_currentState = EAIState::AIS_Patrol;
+		UE_LOG(LogTemp, Warning, TEXT("back to patrol"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("back to patrol other"));
 	}
 }
 
