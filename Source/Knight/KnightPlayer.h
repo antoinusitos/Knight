@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Character.h"
+#include "Data.h"
 #include "KnightPlayer.generated.h"
 
 class AKnightWeapon;
@@ -126,6 +127,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Attack")
 	AKnightWeapon* _theWeapon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
+	TArray<FItemStruct> _inventory;
 
 public:
 	/** Returns CameraBoom subobject **/
