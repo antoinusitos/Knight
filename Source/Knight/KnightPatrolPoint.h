@@ -22,8 +22,13 @@ public:
 
 	AKnightPatrolPoint* GetNextPoint();
 
+	float GetTimeToWait();
+
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Patrol Point")
 	AKnightPatrolPoint* nextPoint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Patrol Point")
+	float timeToWait;
 };

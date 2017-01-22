@@ -110,6 +110,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Attack")
 	int _attackAmount;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Attack")
+	bool _mustPatrol;
+
 public:
 	UFUNCTION(BlueprintCallable, Category = "AI Infos")
 	int GetMaxLife() const;

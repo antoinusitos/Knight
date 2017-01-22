@@ -64,6 +64,8 @@ void AKnightAI::Init()
 	_attackAmount = 30;
 	_isAttacking = false;
 	isInRangeToAttack = false;
+
+	_mustPatrol = false;
 }
 
 // Called when the game starts or when spawned
@@ -102,15 +104,14 @@ void AKnightAI::Tick( float DeltaTime )
 		break;
 
 	case EAIState::AIS_Patrol:
-		_currentTimeToWait = 0.0f;
-		FindPatrolPoint();
-		if (_controller != nullptr)
+		if (_mustPatrol)
 		{
-			MoveToDestinationPoint(_destination);
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("no controller on the AI"));
+			_currentTimeToWait = 0.0f;
+			FindPatrolPoint();
+			if (_controller != nullptr)
+			{
+				MoveToDestinationPoint(_destination);
+			}
 		}
 		break;
 	case EAIState::AIS_Idle:
@@ -127,12 +128,9 @@ void AKnightAI::Tick( float DeltaTime )
 			_destination = _target->GetActorLocation();
 			MoveToDestinationPoint(_destination);
 		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("no _target or no controller on the AI"));
-		}
 		break;
 	case EAIState::AIS_Attack:
+		_isAttacking = true;
 		_controller->MoveToLocation(GetActorLocation());
 		break;
 	}
@@ -151,8 +149,6 @@ void AKnightAI::FindPatrolPoint()
 
 	if(_nextPoint->GetNextPoint())
 		_destination = _nextPoint->GetNextPoint()->GetActorLocation();
-	else
-		UE_LOG(LogTemp, Warning, TEXT("No Next Point to patrol"));
 }
 
 void AKnightAI::MoveToDestinationPoint(const FVector& theDestination)
@@ -197,7 +193,6 @@ void AKnightAI::Attack()
 {
 	if (_canAttack)
 	{
-		_isAttacking = true;
 		TArray<AActor*> player;
 		_attackSphere->GetOverlappingActors(player, TSubclassOf<ACharacter>());
 		for (int i = 0; i < player.Num(); ++i)
@@ -266,6 +261,7 @@ void AKnightAI::OnPlayerRangeAttackOverlapEnd(UPrimitiveComponent* OverlappedCom
 
 	if (_currentState != EAIState::AIS_Dead && _currentState == EAIState::AIS_Attack && !_isAttacking)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("muse follow"));
 		_currentState = EAIState::AIS_Follow;
 	}
 }
@@ -274,19 +270,34 @@ void AKnightAI::TestPlayerIsAround()
 {
 	_isAttacking = false;
 
+	_currentState = EAIState::AIS_Idle;
+
 	TArray<AActor*> overlappingActors;
 	_playerDetection->GetOverlappingActors(overlappingActors, TSubclassOf<AKnightPlayer>());
 	TArray<AActor*> overlappingActorsToAttack;
 	_playerRangeAttack->GetOverlappingActors(overlappingActorsToAttack, TSubclassOf<AKnightPlayer>());
 
-	if (overlappingActors.Num() > 0 && overlappingActorsToAttack.Num() == 0)
+	for (int i = 0; i < overlappingActorsToAttack.Num(); i++)
 	{
-		_currentState = EAIState::AIS_Follow;
+		auto player = Cast<AKnightPlayer>(overlappingActorsToAttack[i]);
+		if (player != nullptr)
+		{
+			_currentState = EAIState::AIS_Attack;
+			return;
+		}
 	}
-	else if (overlappingActorsToAttack.Num() == 0)
+
+	for (int i = 0; i < overlappingActors.Num(); i++)
 	{
-		_currentState = EAIState::AIS_Patrol;
+		auto player = Cast<AKnightPlayer>(overlappingActors[i]);
+		if (player != nullptr)
+		{
+			_currentState = EAIState::AIS_Follow;
+			return;
+		}
 	}
+
+	_currentState = EAIState::AIS_Patrol;
 }
 
 int AKnightAI::GetMaxLife() const
