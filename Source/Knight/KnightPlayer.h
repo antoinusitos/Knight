@@ -129,7 +129,16 @@ protected:
 	AKnightWeapon* _theWeapon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
-	TArray<FItemStruct> _inventory;
+	TArray<FItemStruct> _weapons;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
+	TArray<FItemStruct> _clothes;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
+	TArray<FItemStruct> _consumables;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
+	TArray<FItemStruct> _others;
 
 public:
 	/** Returns CameraBoom subobject **/

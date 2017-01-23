@@ -26,7 +26,7 @@ struct FItemStruct
 	EItemTypeEnum type;
 
 	//Constructor
-	FJoyStruct()
+	FItemStruct()
 	{
 		ID = -1;
 		type = EItemTypeEnum::None;
