@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "Data.h"
 #include "KnightWeapon.generated.h"
 
 UCLASS()
@@ -23,6 +24,8 @@ public:
 	// Empty all hit actors when attacking
 	void EmptyActorHit();
 
+	FWeaponStruct GetInfo();
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Mesh")
 	USkeletalMeshComponent* _mesh;
@@ -30,7 +33,10 @@ protected:
 	UBoxComponent* _collisions;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Info")
-	int _damage;
+	FWeaponStruct _dataInfo;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Info")
+	FName _dataTableID;
 
 private:
 	UFUNCTION()

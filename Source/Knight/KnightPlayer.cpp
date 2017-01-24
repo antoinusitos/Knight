@@ -137,6 +137,9 @@ void AKnightPlayer::Init()
 	_staminaSpeedLoose = 2.0f;
 	_staminaSpeedGain = 2.0f;
 	GetCharacterMovement()->MaxWalkSpeed = _walkingSpeed;
+
+	_maxWeight = 100;
+	_totalWeight = 0;
 }
 
 void AKnightPlayer::Run()
@@ -306,4 +309,11 @@ void AKnightPlayer::PlayerTakeDamage(int amount)
 void AKnightPlayer::Die()
 {
 	_currentPlayerState = EPlayerState::PS_Dead;
+}
+
+void AKnightPlayer::GetTotalWeight()
+{
+	_totalWeight = 0;
+
+	_totalWeight += _theWeapon->GetInfo().weight;
 }

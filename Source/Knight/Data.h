@@ -28,6 +28,15 @@ struct FItemStruct
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
 	EItemTypeEnum itemType;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
+	FString name;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
+	int32 weight;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
+	int32 value;
+
 	//Constructor
 	FItemStruct()
 	{
@@ -35,5 +44,66 @@ struct FItemStruct
 		quantity = 1;
 		image = nullptr;
 		itemType = EItemTypeEnum::None;
+		name = "UNKNOWN";
+		weight = 0;
+		value = 1;
+	}
+};
+
+USTRUCT(BlueprintType)
+struct FWeaponStruct : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
+	FItemStruct base;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
+	int32 damage;
+
+
+	//Constructor
+	FWeaponStruct()
+	{
+		damage = 1;
+	}
+};
+
+USTRUCT(BlueprintType)
+struct FClothesStruct
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
+	FItemStruct base;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
+	int32 armor;
+
+	//Constructor
+	FClothesStruct()
+	{
+		armor = 1;
+	}
+};
+
+USTRUCT(BlueprintType)
+struct FConsumableStruct
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
+	FItemStruct base;
+
+	// put effect here
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
+	//int32 armor;
+
+	//Constructor
+	FConsumableStruct()
+	{
+		base.weight = 0;
+		
 	}
 };

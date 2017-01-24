@@ -58,7 +58,7 @@ void AKnightWeapon::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* 
 			{
 				_actorsHit.Add(OtherActor);
 				UE_LOG(LogTemp, Warning, TEXT("send damage to AI"));
-				ai->ReceiveDamage(_damage);
+				ai->ReceiveDamage(_dataInfo.damage);
 			}
 		}
 	}
@@ -66,5 +66,10 @@ void AKnightWeapon::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* 
 
 void AKnightWeapon::Init()
 {
-	_damage = 35;
+	_dataTableID = "";
+}
+
+FWeaponStruct AKnightWeapon::GetInfo()
+{
+	return _dataInfo;
 }

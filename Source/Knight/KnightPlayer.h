@@ -101,6 +101,11 @@ private:
 	bool _isMovingRight;
 	bool _isRunning;
 
+	int _totalWeight;
+	int _maxWeight;
+
+	void GetTotalWeight();
+
 
 // Make these variables protected to tweek them
 protected:
@@ -129,13 +134,13 @@ protected:
 	AKnightWeapon* _theWeapon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
-	TArray<FItemStruct> _weapons;
+	TArray<FWeaponStruct> _weapons;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
-	TArray<FItemStruct> _clothes;
+	TArray<FClothesStruct> _clothes;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
-	TArray<FItemStruct> _consumables;
+	TArray<FConsumableStruct> _consumables;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
 	TArray<FItemStruct> _others;
