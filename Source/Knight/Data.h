@@ -16,19 +16,24 @@ struct FItemStruct
 {
 	GENERATED_BODY()
 
-	UPROPERTY()
-	int32 ID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
+	int32 id;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
+	int32 quantity;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
 	UTexture2D* image;
 
-	UPROPERTY()
-	EItemTypeEnum type;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
+	EItemTypeEnum itemType;
 
 	//Constructor
 	FItemStruct()
 	{
-		ID = -1;
-		type = EItemTypeEnum::None;
+		id = -1;
+		quantity = 1;
+		image = nullptr;
+		itemType = EItemTypeEnum::None;
 	}
 };
