@@ -4,22 +4,17 @@
 
 #include "GameFramework/Actor.h"
 #include "Data.h"
+#include "KnightObject.h"
 #include "KnightWeapon.generated.h"
 
 UCLASS()
-class KNIGHT_API AKnightWeapon : public AActor
+class KNIGHT_API AKnightWeapon : public AKnightObject
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
 	AKnightWeapon();
-
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-	
-	// Called every frame
-	virtual void Tick( float DeltaSeconds ) override;
 
 	// Empty all hit actors when attacking
 	void EmptyActorHit();

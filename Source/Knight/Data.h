@@ -2,6 +2,8 @@
 
 #include "Data.generated.h"
 
+class AKnightObject;
+
 UENUM(BlueprintType)		//"BlueprintType" is essential to include
 enum class EItemTypeEnum : uint8
 {
@@ -37,6 +39,9 @@ struct FItemStruct
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
 	int32 value;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
+	TSubclassOf<AKnightObject> blueprint;
+
 	//Constructor
 	FItemStruct()
 	{
@@ -61,8 +66,6 @@ struct FWeaponStruct : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
 	int32 damage;
 
-
-	//Constructor
 	FWeaponStruct()
 	{
 		damage = 1;

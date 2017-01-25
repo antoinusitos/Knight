@@ -25,22 +25,6 @@ AKnightWeapon::AKnightWeapon()
 	Init();
 }
 
-// Called when the game starts or when spawned
-void AKnightWeapon::BeginPlay()
-{
-	Super::BeginPlay();
-
-	/*// set up a notification for when this component overlaps something  
-	_collisions->OnComponentBeginOverlap.AddDynamic(this, &AKnightWeapon::OnOverlapBegin);*/
-}
-
-// Called every frame
-void AKnightWeapon::Tick( float DeltaTime )
-{
-	Super::Tick( DeltaTime );
-
-}
-
 void AKnightWeapon::EmptyActorHit()
 {
 	_actorsHit.Empty();

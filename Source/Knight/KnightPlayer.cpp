@@ -40,8 +40,17 @@ AKnightPlayer::AKnightPlayer()
 	followCamera->SetupAttachment(cameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	followCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
+	ConstructorHelpers::FObjectFinder<UDataTable> weaponTable_BP(TEXT("DataTable'/Game/Data/Tables/WeaponDataTable.WeaponDataTable'"));
+	_weaponsTable = weaponTable_BP.Object;
+
 	Init();
 	ACTIVE_DEBUG = false;
+}
+
+void AKnightPlayer::BeginPlay()
+{
+	UE_LOG(LogTemp, Warning, TEXT("begin play"));
+	LoadObjects();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -315,5 +324,22 @@ void AKnightPlayer::GetTotalWeight()
 {
 	_totalWeight = 0;
 
-	_totalWeight += _theWeapon->GetInfo().weight;
+	_totalWeight += _theWeapon->GetInfo().base.weight;
+}
+
+void AKnightPlayer::LoadObjects()
+{
+	for (auto i=0; i < _weaponsToLoad.Num(); i++)
+	{
+		FWeaponStruct* rowWeapon = _weaponsTable->FindRow<FWeaponStruct>(_weaponsToLoad[i], _weaponsTable->GetName(), true);
+
+		if (rowWeapon)
+		{
+			_weapons.Add(*rowWeapon);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("ROW NOT FOUND"));
+		}
+	}
 }

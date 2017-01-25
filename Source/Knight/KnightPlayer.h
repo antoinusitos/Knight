@@ -32,7 +32,6 @@ public:
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* followCamera;
-public:
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
@@ -106,6 +105,25 @@ private:
 
 	void GetTotalWeight();
 
+	void LoadObjects();
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Attack")
+	AKnightWeapon* _theWeapon;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
+	//TArray<FWeaponStruct> _weapons;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
+	TArray<FClothesStruct> _clothes;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
+	TArray<FConsumableStruct> _consumables;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
+	TArray<FItemStruct> _others;
+
+	UDataTable* _weaponsTable;
+
 
 // Make these variables protected to tweek them
 protected:
@@ -131,19 +149,22 @@ protected:
 	float _currentStamina;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Attack")
-	AKnightWeapon* _theWeapon;
+	FName _theWeaponToLoad;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
 	TArray<FWeaponStruct> _weapons;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
-	TArray<FClothesStruct> _clothes;
+	TArray<FName> _weaponsToLoad;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
-	TArray<FConsumableStruct> _consumables;
+	TArray<FName> _clothesToLoad;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
-	TArray<FItemStruct> _others;
+	TArray<FName> _consumablesToLoad;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
+	TArray<FName> _othersToLoad;
 
 public:
 	/** Returns CameraBoom subobject **/
@@ -152,6 +173,8 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return followCamera; }
 
 	AKnightPlayer();
+
+	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PLAYER DEBUG")
 	bool ACTIVE_DEBUG;
