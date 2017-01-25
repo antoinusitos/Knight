@@ -42,6 +42,12 @@ struct FItemStruct
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
 	TSubclassOf<AKnightObject> blueprint;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
+	int32 durabilityMax;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
+	int32 currentDurability;
+
 	//Constructor
 	FItemStruct()
 	{
@@ -52,6 +58,8 @@ struct FItemStruct
 		name = "UNKNOWN";
 		weight = 0;
 		value = 1;
+		durabilityMax = 0;
+		currentDurability = 0;
 	}
 };
 
@@ -73,7 +81,7 @@ struct FWeaponStruct : public FTableRowBase
 };
 
 USTRUCT(BlueprintType)
-struct FClothesStruct
+struct FClothesStruct : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -91,7 +99,7 @@ struct FClothesStruct
 };
 
 USTRUCT(BlueprintType)
-struct FConsumableStruct
+struct FConsumableStruct : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -99,7 +107,6 @@ struct FConsumableStruct
 	FItemStruct base;
 
 	// put effect here
-
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
 	//int32 armor;
 

@@ -107,22 +107,28 @@ private:
 
 	void LoadObjects();
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Attack")
+	UPROPERTY(VisibleAnywhere, Category = "Player Attack")
 	AKnightWeapon* _theWeapon;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
-	//TArray<FWeaponStruct> _weapons;
+	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
+	TArray<FWeaponStruct> _weapons;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
+	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
 	TArray<FClothesStruct> _clothes;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
+	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
 	TArray<FConsumableStruct> _consumables;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
+	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
 	TArray<FItemStruct> _others;
 
 	UDataTable* _weaponsTable;
+	UDataTable* _clothesTable;
+	UDataTable* _consumableTable;
+
+	int32 HaveWeapon(int32 id);
+	int32 HaveConsumable(int32 id);
+	int32 HaveClothes(int32 id);
 
 
 // Make these variables protected to tweek them
@@ -152,19 +158,16 @@ protected:
 	FName _theWeaponToLoad;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
-	TArray<FWeaponStruct> _weapons;
+	TArray<int32> _weaponsToLoad;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
-	TArray<FName> _weaponsToLoad;
+	TArray<int32> _clothesToLoad;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
-	TArray<FName> _clothesToLoad;
+	TArray<int32> _consumablesToLoad;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
-	TArray<FName> _consumablesToLoad;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
-	TArray<FName> _othersToLoad;
+	TArray<int32> _othersToLoad;
 
 public:
 	/** Returns CameraBoom subobject **/
