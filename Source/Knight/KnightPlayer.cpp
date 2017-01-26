@@ -3,7 +3,8 @@
 #include "Knight.h"
 #include "KnightPlayer.h"
 #include "KnightWeapon.h"
-
+#include "KnightClothes.h"
+#include "KnightConsumable.h"
 
 // Sets default values
 AKnightPlayer::AKnightPlayer()
@@ -55,8 +56,10 @@ void AKnightPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Warning, TEXT("begin play"));
 	LoadObjects();
+	EquipWeapons();
+	EquipClothes();
+	EquipConsumable();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -208,8 +211,10 @@ void AKnightPlayer::Attack()
 {
 	if(CanAttack())
 	{
-		if(_theWeapon)
-			_theWeapon->EmptyActorHit();
+		if (_firstWeapon)
+		{
+			_firstWeapon->EmptyActorHit();
+		}
 		_currentPlayerState = EPlayerState::PS_Attack;
 		_lastStaminaLost = 0.0f;
 		_currentStamina -= _staminaAttackLoose;
@@ -330,7 +335,7 @@ void AKnightPlayer::GetTotalWeight()
 {
 	_totalWeight = 0;
 
-	_totalWeight += _theWeapon->GetInfo().base.weight;
+	_totalWeight += _firstWeapon->GetInfo().base.weight;
 }
 
 void AKnightPlayer::LoadObjects()
@@ -422,4 +427,92 @@ int32 AKnightPlayer::HaveClothes(int32 id)
 			return i;
 	}
 	return -1;
+}
+
+void AKnightPlayer::EquipWeapons()
+{
+	int weaponsNumber = _weapons.Num();
+	if (weaponsNumber > 0)
+	{
+		_firstWeapon = GetWorld()->SpawnActor<AKnightWeapon>(_weapons[0].base.blueprint, GetActorLocation(), GetActorRotation());
+		_firstWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
+		_firstWeapon->SetInfo(_weapons[0]);
+	}
+	if (weaponsNumber > 1)
+	{
+		_secondWeapon = GetWorld()->SpawnActor<AKnightWeapon>(_weapons[1].base.blueprint, GetActorLocation(), GetActorRotation());
+		_secondWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("LeftHandSocket"));
+		_secondWeapon->SetInfo(_weapons[1]);
+	}
+}
+
+void AKnightPlayer::EquipClothes()
+{
+	int clothessNumber = _clothes.Num();
+	int indexClothes = 0;
+	if (clothessNumber > indexClothes)
+	{
+		_helmet = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
+		_helmet->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Helmet"));
+		_helmet->SetInfo(_clothes[indexClothes]);
+	}
+	indexClothes++;
+	if (clothessNumber > indexClothes)
+	{
+		_chest = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
+		_chest->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Helmet"));
+		_chest->SetInfo(_clothes[indexClothes]);
+	}
+	indexClothes++;
+	if (clothessNumber > indexClothes)
+	{
+		_greaves = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
+		_greaves->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Helmet"));
+		_greaves->SetInfo(_clothes[indexClothes]);
+	}
+	indexClothes++;
+	if (clothessNumber > indexClothes)
+	{
+		_gloves = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
+		_gloves->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Helmet"));
+		_gloves->SetInfo(_clothes[indexClothes]);
+	}
+	indexClothes++;
+	if (clothessNumber > indexClothes)
+	{
+		_shoes = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
+		_shoes->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Helmet"));
+		_shoes->SetInfo(_clothes[indexClothes]);
+	}
+	indexClothes++;
+	if (clothessNumber > indexClothes)
+	{
+		_firstRing = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
+		_firstRing->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Helmet"));
+		_firstRing->SetInfo(_clothes[indexClothes]);
+	}
+	indexClothes++;
+	if (clothessNumber > indexClothes)
+	{
+		_secondRing = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
+		_secondRing->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Helmet"));
+		_secondRing->SetInfo(_clothes[indexClothes]);
+	}
+}
+
+void AKnightPlayer::EquipConsumable()
+{
+	int consumableNumber = _consumables.Num();
+	if (consumableNumber > 0)
+	{
+		_firstSlot = GetWorld()->SpawnActor<AKnightConsumable>(_consumables[0].base.blueprint, GetActorLocation(), GetActorRotation());
+		_firstSlot->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
+		_firstSlot->SetInfo(_consumables[0]);
+	}
+	if (consumableNumber > 1)
+	{
+		_secondSlot = GetWorld()->SpawnActor<AKnightConsumable>(_consumables[1].base.blueprint, GetActorLocation(), GetActorRotation());
+		_secondSlot->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("LeftHandSocket"));
+		_secondSlot->SetInfo(_consumables[1]);
+	}
 }

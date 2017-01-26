@@ -12,3 +12,13 @@ void AKnightClothes::UnEquip()
 {
 	UE_LOG(LogTemp, Warning, TEXT("%s was UnEquip"), *GetName());
 }
+
+FClothesStruct AKnightClothes::GetInfo()
+{
+	return _dataInfo;
+}
+
+void AKnightClothes::SetInfo(const FClothesStruct& infos)
+{
+	_dataInfo = infos;
+}

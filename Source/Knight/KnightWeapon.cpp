@@ -57,3 +57,8 @@ FWeaponStruct AKnightWeapon::GetInfo()
 {
 	return _dataInfo;
 }
+
+void AKnightWeapon::SetInfo(const FWeaponStruct& infos)
+{
+	_dataInfo = infos;
+}

@@ -20,6 +20,7 @@ public:
 	void EmptyActorHit();
 
 	FWeaponStruct GetInfo();
+	void SetInfo(const FWeaponStruct& infos);
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Mesh")

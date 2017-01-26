@@ -7,6 +7,8 @@
 #include "KnightPlayer.generated.h"
 
 class AKnightWeapon;
+class AKnightClothes;
+class AKnightConsumable;
 
 UENUM(BlueprintType)		//"BlueprintType" is essential to include
 enum class EPlayerState : uint8
@@ -106,9 +108,49 @@ private:
 	void GetTotalWeight();
 
 	void LoadObjects();
+	void EquipWeapons();
+	void EquipClothes();
+	void EquipConsumable();
 
-	UPROPERTY(VisibleAnywhere, Category = "Player Attack")
-	AKnightWeapon* _theWeapon;
+	// EQUIPPED
+
+	// Weapons
+	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
+	AKnightWeapon* _firstWeapon;
+
+	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
+	AKnightWeapon* _secondWeapon;
+
+	// clothes
+	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
+	AKnightClothes* _helmet;
+
+	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
+	AKnightClothes* _chest;
+
+	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
+	AKnightClothes* _greaves;
+
+	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
+	AKnightClothes* _gloves;
+
+	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
+	AKnightClothes* _shoes;
+
+	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
+	AKnightClothes* _firstRing;
+
+	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
+	AKnightClothes* _secondRing;
+
+	// quick Slot
+	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
+	AKnightConsumable* _firstSlot;
+
+	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
+	AKnightConsumable* _secondSlot;
+
+	// INVENTORY
 
 	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
 	TArray<FWeaponStruct> _weapons;

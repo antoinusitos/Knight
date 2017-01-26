@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "Data.h"
 #include "KnightObject.generated.h"
 
 UCLASS()
@@ -19,7 +20,5 @@ public:
 	
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
-
-	
 	
 };

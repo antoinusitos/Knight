@@ -13,11 +13,17 @@ class KNIGHT_API AKnightClothes : public AKnightObject
 {
 	GENERATED_BODY()
 	
+protected:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "clothes Info")
+	FClothesStruct _dataInfo;
+
 public:
 
 	void Equip();
 
 	void UnEquip();
 	
-	
+	FClothesStruct GetInfo();
+	void SetInfo(const FClothesStruct& infos);
 };

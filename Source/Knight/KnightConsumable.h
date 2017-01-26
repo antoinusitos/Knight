@@ -13,7 +13,12 @@ class KNIGHT_API AKnightConsumable : public AKnightObject
 {
 	GENERATED_BODY()
 	
+protected:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "clothes Info")
+	FConsumableStruct _dataInfo;
 	
-	
-	
+public:
+	FConsumableStruct GetInfo();
+	void SetInfo(const FConsumableStruct& infos);
 };
