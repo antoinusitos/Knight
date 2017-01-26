@@ -435,13 +435,13 @@ void AKnightPlayer::EquipWeapons()
 	if (weaponsNumber > 0)
 	{
 		_firstWeapon = GetWorld()->SpawnActor<AKnightWeapon>(_weapons[0].base.blueprint, GetActorLocation(), GetActorRotation());
-		_firstWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
+		_firstWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightWeaponSocket"));
 		_firstWeapon->SetInfo(_weapons[0]);
 	}
 	if (weaponsNumber > 1)
 	{
 		_secondWeapon = GetWorld()->SpawnActor<AKnightWeapon>(_weapons[1].base.blueprint, GetActorLocation(), GetActorRotation());
-		_secondWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("LeftHandSocket"));
+		_secondWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("LeftWeaponSocket"));
 		_secondWeapon->SetInfo(_weapons[1]);
 	}
 }
@@ -453,49 +453,49 @@ void AKnightPlayer::EquipClothes()
 	if (clothessNumber > indexClothes)
 	{
 		_helmet = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
-		_helmet->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Helmet"));
+		_helmet->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("HeadSocket"));
 		_helmet->SetInfo(_clothes[indexClothes]);
 	}
 	indexClothes++;
 	if (clothessNumber > indexClothes)
 	{
 		_chest = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
-		_chest->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Helmet"));
+		_chest->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("ChestSocket"));
 		_chest->SetInfo(_clothes[indexClothes]);
 	}
 	indexClothes++;
 	if (clothessNumber > indexClothes)
 	{
 		_greaves = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
-		_greaves->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Helmet"));
+		_greaves->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("GreavesSocket"));
 		_greaves->SetInfo(_clothes[indexClothes]);
 	}
 	indexClothes++;
 	if (clothessNumber > indexClothes)
 	{
 		_gloves = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
-		_gloves->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Helmet"));
+		_gloves->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
 		_gloves->SetInfo(_clothes[indexClothes]);
 	}
 	indexClothes++;
 	if (clothessNumber > indexClothes)
 	{
 		_shoes = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
-		_shoes->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Helmet"));
+		_shoes->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("ShoesSocket"));
 		_shoes->SetInfo(_clothes[indexClothes]);
 	}
 	indexClothes++;
 	if (clothessNumber > indexClothes)
 	{
 		_firstRing = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
-		_firstRing->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Helmet"));
+		_firstRing->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("FirstRingSocket"));
 		_firstRing->SetInfo(_clothes[indexClothes]);
 	}
 	indexClothes++;
 	if (clothessNumber > indexClothes)
 	{
 		_secondRing = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
-		_secondRing->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Helmet"));
+		_secondRing->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("SecondRingSocket"));
 		_secondRing->SetInfo(_clothes[indexClothes]);
 	}
 }
@@ -505,14 +505,10 @@ void AKnightPlayer::EquipConsumable()
 	int consumableNumber = _consumables.Num();
 	if (consumableNumber > 0)
 	{
-		_firstSlot = GetWorld()->SpawnActor<AKnightConsumable>(_consumables[0].base.blueprint, GetActorLocation(), GetActorRotation());
-		_firstSlot->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
 		_firstSlot->SetInfo(_consumables[0]);
 	}
 	if (consumableNumber > 1)
 	{
-		_secondSlot = GetWorld()->SpawnActor<AKnightConsumable>(_consumables[1].base.blueprint, GetActorLocation(), GetActorRotation());
-		_secondSlot->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("LeftHandSocket"));
 		_secondSlot->SetInfo(_consumables[1]);
 	}
 }
