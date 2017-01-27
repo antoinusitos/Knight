@@ -4,13 +4,25 @@
 
 class AKnightObject;
 
-UENUM(BlueprintType)		//"BlueprintType" is essential to include
+UENUM(BlueprintType)
 enum class EItemTypeEnum : uint8
 {
 	None 		UMETA(DisplayName = "None"),
 	Weapon 		UMETA(DisplayName = "Weapon"),
 	Stuff 		UMETA(DisplayName = "Stuff"),
 	Usable		UMETA(DisplayName = "Usable"),
+};
+
+UENUM(BlueprintType)
+enum class EClothesTypeEnum : uint8
+{
+	None 		UMETA(DisplayName = "None"),
+	Helmet 		UMETA(DisplayName = "Helmet"),
+	Chest 		UMETA(DisplayName = "Chest"),
+	RightHand	UMETA(DisplayName = "RightHand"),
+	LeftHand	UMETA(DisplayName = "LeftHand"),
+	Greaves		UMETA(DisplayName = "Greaves"),
+	Foot		UMETA(DisplayName = "Foot"),
 };
 
 USTRUCT(BlueprintType)
@@ -91,10 +103,14 @@ struct FClothesStruct : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
 	int32 armor;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
+	EClothesTypeEnum clothesType;
+
 	//Constructor
 	FClothesStruct()
 	{
 		armor = 1;
+		clothesType = EClothesTypeEnum::None;
 	}
 };
 
