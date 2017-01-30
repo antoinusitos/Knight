@@ -126,16 +126,22 @@ private:
 	AKnightClothes* _helmet;
 
 	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
-	AKnightClothes* _chest;
+	AKnightClothes* _torso;
 
 	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
 	AKnightClothes* _greaves;
 
 	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
-	AKnightClothes* _gloves;
+	AKnightClothes* _gloveLeft;
 
 	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
-	AKnightClothes* _shoes;
+	AKnightClothes* _gloveRight;
+
+	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
+	AKnightClothes* _shoeLeft;
+
+	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
+	AKnightClothes* _shoeRight;
 
 	UPROPERTY(VisibleAnywhere, Category = "Player Inventory")
 	AKnightClothes* _firstRing;

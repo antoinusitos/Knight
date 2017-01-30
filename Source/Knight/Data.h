@@ -18,9 +18,9 @@ enum class EClothesTypeEnum : uint8
 {
 	None 		UMETA(DisplayName = "None"),
 	Helmet 		UMETA(DisplayName = "Helmet"),
-	Chest 		UMETA(DisplayName = "Chest"),
-	RightHand	UMETA(DisplayName = "RightHand"),
-	LeftHand	UMETA(DisplayName = "LeftHand"),
+	Torso 		UMETA(DisplayName = "Torso"),
+	Hand		UMETA(DisplayName = "RightHand"),
+	Ring		UMETA(DisplayName = "LeftHand"),
 	Greaves		UMETA(DisplayName = "Greaves"),
 	Foot		UMETA(DisplayName = "Foot"),
 };

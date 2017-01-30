@@ -448,7 +448,72 @@ void AKnightPlayer::EquipWeapons()
 
 void AKnightPlayer::EquipClothes()
 {
-	int clothessNumber = _clothes.Num();
+
+	for (int i = 0; i < _clothes.Num(); i++)
+	{
+		switch (_clothes[i].clothesType)
+		{
+			case EClothesTypeEnum::Helmet :
+			{
+				_helmet = GetWorld()->SpawnActor<AKnightClothes>(_clothes[i].base.blueprint, GetActorLocation(), GetActorRotation());
+				_helmet->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("HeadSocket"));
+				_helmet->SetInfo(_clothes[i]);
+				break;
+			}
+			case EClothesTypeEnum::Torso:
+			{
+				_torso = GetWorld()->SpawnActor<AKnightClothes>(_clothes[i].base.blueprint, GetActorLocation(), GetActorRotation());
+				_torso->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("TorsoSocket"));
+				_torso->SetInfo(_clothes[i]);
+				break;
+			}
+			case EClothesTypeEnum::Greaves:
+			{
+				_greaves = GetWorld()->SpawnActor<AKnightClothes>(_clothes[i].base.blueprint, GetActorLocation(), GetActorRotation());
+				_greaves->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("GreavesSocket"));
+				_greaves->SetInfo(_clothes[i]);
+				break;
+			}
+			case EClothesTypeEnum::Hand:
+			{
+				_gloveRight = GetWorld()->SpawnActor<AKnightClothes>(_clothes[i].base.blueprint, GetActorLocation(), GetActorRotation());
+				_gloveRight->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
+				_gloveRight->SetInfo(_clothes[i]);
+				_gloveLeft = GetWorld()->SpawnActor<AKnightClothes>(_clothes[i].base.blueprint, GetActorLocation(), GetActorRotation());
+				_gloveLeft->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("LeftHandSocket"));
+				_gloveLeft->SetInfo(_clothes[i]);
+				break;
+			}
+			case EClothesTypeEnum::Foot:
+			{
+				_shoeLeft = GetWorld()->SpawnActor<AKnightClothes>(_clothes[i].base.blueprint, GetActorLocation(), GetActorRotation());
+				_shoeLeft->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("LeftFootSocket"));
+				_shoeLeft->SetInfo(_clothes[i]);
+				_shoeRight = GetWorld()->SpawnActor<AKnightClothes>(_clothes[i].base.blueprint, GetActorLocation(), GetActorRotation());
+				_shoeRight->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightFootSocket"));
+				_shoeRight->SetInfo(_clothes[i]);
+				break;
+			}
+			case EClothesTypeEnum::Ring:
+			{
+				if (_firstRing == nullptr)
+				{
+					_firstRing = GetWorld()->SpawnActor<AKnightClothes>(_clothes[i].base.blueprint, GetActorLocation(), GetActorRotation());
+					_firstRing->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("FirstRingSocket"));
+					_firstRing->SetInfo(_clothes[i]);
+				}
+				else if (_secondRing == nullptr)
+				{
+					_secondRing = GetWorld()->SpawnActor<AKnightClothes>(_clothes[i].base.blueprint, GetActorLocation(), GetActorRotation());
+					_secondRing->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("SecondRingSocket"));
+					_secondRing->SetInfo(_clothes[i]);
+				}
+				break;
+			}
+		}
+	}
+
+	/*int clothessNumber = _clothes.Num();
 	int indexClothes = 0;
 	if (clothessNumber > indexClothes)
 	{
@@ -497,7 +562,7 @@ void AKnightPlayer::EquipClothes()
 		_secondRing = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
 		_secondRing->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("SecondRingSocket"));
 		_secondRing->SetInfo(_clothes[indexClothes]);
-	}
+	}*/
 }
 
 void AKnightPlayer::EquipConsumable()
