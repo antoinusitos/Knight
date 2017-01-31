@@ -348,7 +348,7 @@ void AKnightPlayer::LoadObjects()
 
 		if (rowWeapon)
 		{
-			int32 index = HaveWeapon((int)_weaponsToLoad[i]);
+			int32 index = HaveWeapon(_weaponsToLoad[i]);
 			if (index == -1)
 				_weapons.Add(*rowWeapon);
 			else
@@ -367,7 +367,7 @@ void AKnightPlayer::LoadObjects()
 
 		if (rowClothes)
 		{
-			int32 index = HaveConsumable((int)_clothesToLoad[i]);
+			int32 index = HaveClothes(_clothesToLoad[i]);
 			if (index == -1)
 				_clothes.Add(*rowClothes);
 			else
@@ -386,7 +386,7 @@ void AKnightPlayer::LoadObjects()
 
 		if (rowConsumable)
 		{
-			int32 index = HaveConsumable((int)_consumablesToLoad[i]);
+			int32 index = HaveConsumable(_consumablesToLoad[i]);
 			if(index == -1)
 				_consumables.Add(*rowConsumable);
 			else
@@ -448,7 +448,6 @@ void AKnightPlayer::EquipWeapons()
 
 void AKnightPlayer::EquipClothes()
 {
-
 	for (int i = 0; i < _clothes.Num(); i++)
 	{
 		switch (_clothes[i].clothesType)
@@ -512,57 +511,6 @@ void AKnightPlayer::EquipClothes()
 			}
 		}
 	}
-
-	/*int clothessNumber = _clothes.Num();
-	int indexClothes = 0;
-	if (clothessNumber > indexClothes)
-	{
-		_helmet = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
-		_helmet->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("HeadSocket"));
-		_helmet->SetInfo(_clothes[indexClothes]);
-	}
-	indexClothes++;
-	if (clothessNumber > indexClothes)
-	{
-		_chest = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
-		_chest->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("ChestSocket"));
-		_chest->SetInfo(_clothes[indexClothes]);
-	}
-	indexClothes++;
-	if (clothessNumber > indexClothes)
-	{
-		_greaves = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
-		_greaves->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("GreavesSocket"));
-		_greaves->SetInfo(_clothes[indexClothes]);
-	}
-	indexClothes++;
-	if (clothessNumber > indexClothes)
-	{
-		_gloves = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
-		_gloves->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
-		_gloves->SetInfo(_clothes[indexClothes]);
-	}
-	indexClothes++;
-	if (clothessNumber > indexClothes)
-	{
-		_shoes = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
-		_shoes->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("ShoesSocket"));
-		_shoes->SetInfo(_clothes[indexClothes]);
-	}
-	indexClothes++;
-	if (clothessNumber > indexClothes)
-	{
-		_firstRing = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
-		_firstRing->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("FirstRingSocket"));
-		_firstRing->SetInfo(_clothes[indexClothes]);
-	}
-	indexClothes++;
-	if (clothessNumber > indexClothes)
-	{
-		_secondRing = GetWorld()->SpawnActor<AKnightClothes>(_clothes[indexClothes].base.blueprint, GetActorLocation(), GetActorRotation());
-		_secondRing->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("SecondRingSocket"));
-		_secondRing->SetInfo(_clothes[indexClothes]);
-	}*/
 }
 
 void AKnightPlayer::EquipConsumable()
@@ -570,10 +518,12 @@ void AKnightPlayer::EquipConsumable()
 	int consumableNumber = _consumables.Num();
 	if (consumableNumber > 0)
 	{
+		_firstSlot = GetWorld()->SpawnActor<AKnightConsumable>(_consumables[0].base.blueprint, GetActorLocation(), GetActorRotation());
 		_firstSlot->SetInfo(_consumables[0]);
 	}
 	if (consumableNumber > 1)
 	{
+		_secondSlot = GetWorld()->SpawnActor<AKnightConsumable>(_consumables[1].base.blueprint, GetActorLocation(), GetActorRotation());
 		_secondSlot->SetInfo(_consumables[1]);
 	}
 }
