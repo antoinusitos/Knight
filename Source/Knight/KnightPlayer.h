@@ -246,4 +246,36 @@ public:
 	void SetCurrentPlayerState(EPlayerState NewPlayerState);
 
 	void PlayerTakeDamage(int amount);
+
+	// Current Equiped
+	UFUNCTION(BlueprintCallable, Category = "Player Infos")
+	AKnightWeapon* GetWeaponOne();
+	UFUNCTION(BlueprintCallable, Category = "Player Infos")
+	AKnightWeapon* GetWeaponTwo();
+
+	UFUNCTION(BlueprintCallable, Category = "Player Infos")
+	AKnightClothes* GetHelmet();
+	UFUNCTION(BlueprintCallable, Category = "Player Infos")
+	AKnightClothes* GetTorso();
+	UFUNCTION(BlueprintCallable, Category = "Player Infos")
+	AKnightClothes* GetGreaves();
+	UFUNCTION(BlueprintCallable, Category = "Player Infos")
+	AKnightClothes* GetGloveRight();
+	UFUNCTION(BlueprintCallable, Category = "Player Infos")
+	AKnightClothes* GetGloveLeft();
+	UFUNCTION(BlueprintCallable, Category = "Player Infos")
+	AKnightClothes* GetShoeRight();
+	UFUNCTION(BlueprintCallable, Category = "Player Infos")
+	AKnightClothes* GetShoeLeft();
+
+
+	// Inventory
+	UFUNCTION(BlueprintCallable, Category = "Player Infos")
+	TArray<FWeaponStruct> GetWeapons();
+	UFUNCTION(BlueprintCallable, Category = "Player Infos")
+	TArray<FClothesStruct> GetClothes();
+	UFUNCTION(BlueprintCallable, Category = "Player Infos")
+	TArray<FConsumableStruct> GetConsummable();
+	UFUNCTION(BlueprintCallable, Category = "Player Infos")
+	TArray<FItemStruct> GetItem();
 };

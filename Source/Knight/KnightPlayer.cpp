@@ -326,6 +326,71 @@ void AKnightPlayer::PlayerTakeDamage(int amount)
 	}
 }
 
+AKnightWeapon* AKnightPlayer::GetWeaponOne()
+{
+	return _firstWeapon;
+}
+
+AKnightWeapon* AKnightPlayer::GetWeaponTwo()
+{
+	return _secondWeapon;
+}
+
+AKnightClothes* AKnightPlayer::GetHelmet()
+{
+	return _helmet;
+}
+
+AKnightClothes* AKnightPlayer::GetTorso()
+{
+	return _torso;
+}
+
+AKnightClothes* AKnightPlayer::GetGreaves()
+{
+	return _greaves;
+}
+
+AKnightClothes* AKnightPlayer::GetGloveRight()
+{
+	return _gloveRight;
+}
+
+AKnightClothes* AKnightPlayer::GetGloveLeft()
+{
+	return _gloveLeft;
+}
+
+AKnightClothes* AKnightPlayer::GetShoeRight()
+{
+	return _shoeRight;
+}
+
+AKnightClothes* AKnightPlayer::GetShoeLeft()
+{
+	return _shoeLeft;
+}
+
+TArray<FWeaponStruct> AKnightPlayer::GetWeapons()
+{
+	return _weapons;
+}
+
+TArray<FClothesStruct> AKnightPlayer::GetClothes()
+{
+	return _clothes;
+}
+
+TArray<FConsumableStruct> AKnightPlayer::GetConsummable()
+{
+	return _consumables;
+}
+
+TArray<FItemStruct> AKnightPlayer::GetItem()
+{
+	return _others;
+}
+
 void AKnightPlayer::Die()
 {
 	_currentPlayerState = EPlayerState::PS_Dead;
