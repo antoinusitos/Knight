@@ -5,6 +5,7 @@
 #include "KnightWeapon.h"
 #include "KnightClothes.h"
 #include "KnightConsumable.h"
+#include "KnightSeller.h"
 
 // Sets default values
 AKnightPlayer::AKnightPlayer()
@@ -36,10 +37,15 @@ AKnightPlayer::AKnightPlayer()
 	cameraBoom->TargetArmLength = 300.0f; // The camera follows at this distance behind the character	
 	cameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 
-												// Create a follow camera
+	// Create a follow camera
 	followCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	followCamera->SetupAttachment(cameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	followCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+
+	_playerDetection = CreateDefaultSubobject<USphereComponent>(TEXT("player detection"));
+	_playerDetection->SetupAttachment(RootComponent);
+	_playerDetection->OnComponentBeginOverlap.AddDynamic(this, &AKnightPlayer::OnPlayerDetectionOverlapBegin);
+	_playerDetection->OnComponentEndOverlap.AddDynamic(this, &AKnightPlayer::OnPlayerDetectionOverlapEnd);
 
 	ConstructorHelpers::FObjectFinder<UDataTable> weaponTable_BP(TEXT("DataTable'/Game/Data/Tables/WeaponDataTable.WeaponDataTable'"));
 	_weaponsTable = weaponTable_BP.Object;
@@ -80,14 +86,17 @@ void AKnightPlayer::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 
 	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &AKnightPlayer::Attack);
 
+	PlayerInputComponent->BindAction("Action", IE_Pressed, this, &AKnightPlayer::Action);
+	PlayerInputComponent->BindAction("Cancel", IE_Pressed, this, &AKnightPlayer::Cancel);
+
 	PlayerInputComponent->BindAction("Heal", IE_Pressed, this, &AKnightPlayer::Heal);
 
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
 	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
-	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("Turn", this, &AKnightPlayer::Turn);
 	PlayerInputComponent->BindAxis("TurnRate", this, &AKnightPlayer::TurnAtRate);
-	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &AKnightPlayer::LookUp);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AKnightPlayer::LookUpAtRate);
 }
 
@@ -158,6 +167,9 @@ void AKnightPlayer::Init()
 
 	_maxWeight = 100;
 	_totalWeight = 0;
+	
+	_gold = 50;
+	_shopOpen = false;
 }
 
 void AKnightPlayer::Run()
@@ -189,6 +201,26 @@ void AKnightPlayer::LookUpAtRate(float Rate)
 	AddControllerPitchInput(Rate * _baseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
+void AKnightPlayer::Action()
+{
+	if (_sellerToOpen && !_shopOpen)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("OPEN SELLER"));
+		_shopOpen = true;
+		OpenShop(_sellerToOpen);
+	}
+}
+
+void AKnightPlayer::Cancel()
+{
+	if (_sellerToOpen && _shopOpen)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CLOSE SELLER"));
+		_shopOpen = false;
+		HideShop();
+	}
+}
+
 bool AKnightPlayer::CanAttack() const
 {
 	if(_currentPlayerState == EPlayerState::PS_Attack ||
@@ -202,6 +234,10 @@ bool AKnightPlayer::CanAttack() const
 			UE_LOG(LogTemp, Warning, TEXT("PS_Heal %s"), _currentPlayerState == EPlayerState::PS_Heal ? TEXT("true") : TEXT("false"));
 			UE_LOG(LogTemp, Warning, TEXT("stamina %s"), _currentStamina < _staminaAttackLoose ? TEXT("true") : TEXT("false"));
 		}
+		return false;
+	}
+	else if (_shopOpen)
+	{
 		return false;
 	}
 	return true;
@@ -245,6 +281,10 @@ bool AKnightPlayer::CanMove() const
 	{
 		return false;
 	}
+	else if (_shopOpen)
+	{
+		return false;
+	}
 	return true;
 }
 
@@ -284,6 +324,22 @@ void AKnightPlayer::MoveRight(float Value)
 	else
 	{
 		_isMovingRight = false;
+	}
+}
+
+void AKnightPlayer::Turn(float Value)
+{
+	if (!_shopOpen)
+	{
+		AddControllerYawInput(Value);
+	}
+}
+
+void AKnightPlayer::LookUp(float Value)
+{
+	if (!_shopOpen)
+	{
+		AddControllerPitchInput(Value);
 	}
 }
 
@@ -492,6 +548,23 @@ int32 AKnightPlayer::HaveClothes(int32 id)
 			return i;
 	}
 	return -1;
+}
+
+void AKnightPlayer::OnPlayerDetectionOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+{
+	AKnightSeller* newSeller = Cast<AKnightSeller>(OtherActor);
+	if (newSeller)
+	{
+		_sellerToOpen = newSeller;
+	}
+}
+
+void AKnightPlayer::OnPlayerDetectionOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (OtherActor == _sellerToOpen)
+	{
+		_sellerToOpen = nullptr;
+	}
 }
 
 void AKnightPlayer::EquipWeapons()

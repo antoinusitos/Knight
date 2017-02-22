@@ -125,3 +125,18 @@ int32 AKnightSeller::HaveClothes(int32 id)
 	}
 	return -1;
 }
+
+TArray<FWeaponStruct> AKnightSeller::GetWeapons()
+{
+	return _weapons;
+}
+
+TArray<FClothesStruct> AKnightSeller::GetClothes()
+{
+	return _clothes;
+}
+
+TArray<FConsumableStruct> AKnightSeller::GetConsummables()
+{
+	return _consumables;
+}

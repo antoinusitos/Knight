@@ -8,10 +8,10 @@ Features in progress :
   - Inventory
   - Weapon
   - AI (general)
+  - Shop
 
 Features incoming in the project :
 
   - AI range & melee
   - Pickup
-  - Shop
   - Spell

@@ -9,6 +9,7 @@
 class AKnightWeapon;
 class AKnightClothes;
 class AKnightConsumable;
+class AKnightSeller;
 
 UENUM(BlueprintType)		//"BlueprintType" is essential to include
 enum class EPlayerState : uint8
@@ -51,6 +52,10 @@ private:
 	/** Called for side to side input */
 	void MoveRight(float Value);
 
+	void Turn(float Value);
+
+	void LookUp(float Value);
+
 	/**
 	* Called via input to turn at a given rate.
 	* @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
@@ -85,14 +90,23 @@ private:
 
 	void Die();
 
+	void Action();
+
+	void Cancel();
+
+	// the speed of the loose of stamina
 	UPROPERTY(EditAnywhere, Category = "Player Movement")
 	float _staminaSpeedLoose;
+	// the speed of the gain of stamina
 	UPROPERTY(EditAnywhere, Category = "Player Movement")
 	float _staminaSpeedGain;
 
+	// current time waited for the stamina to refill
 	float _lastStaminaLost;
+	// the time before the refill of stamina
 	float _timeToGainStamina;
 
+	// the amount of stamina lost when attacking
 	UPROPERTY(EditAnywhere, Category = "Player Attack")
 	float _staminaAttackLoose;
 
@@ -107,6 +121,7 @@ private:
 
 	void GetTotalWeight();
 
+	// load the objects that must be equipped
 	void LoadObjects();
 	void EquipWeapons();
 	void EquipClothes();
@@ -178,6 +193,16 @@ private:
 	int32 HaveConsumable(int32 id);
 	int32 HaveClothes(int32 id);
 
+	int _gold;
+
+	AKnightSeller* _sellerToOpen;
+	bool _shopOpen;
+
+	UFUNCTION()
+	void OnPlayerDetectionOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+	UFUNCTION()
+	void OnPlayerDetectionOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
 
 // Make these variables protected to tweek them
 protected:
@@ -216,6 +241,15 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Inventory")
 	TArray<int32> _othersToLoad;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Detection")
+	USphereComponent* _playerDetection;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Player Shop")
+	void OpenShop(AKnightSeller* shopToOpen);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Player Shop")
+	void HideShop();
 
 public:
 	/** Returns CameraBoom subobject **/

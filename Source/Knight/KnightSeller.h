@@ -25,34 +25,41 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Seller")
+	TArray<FWeaponStruct> GetWeapons();
+	UFUNCTION(BlueprintCallable, Category = "Seller")
+	TArray<FClothesStruct> GetClothes();
+	UFUNCTION(BlueprintCallable, Category = "Seller")
+	TArray<FConsumableStruct> GetConsummables();
+
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Seller Inventory")
-		TArray<int32> _weaponsToLoad;
+	TArray<int32> _weaponsToLoad;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Seller Inventory")
-		TArray<int32> _clothesToLoad;
+	TArray<int32> _clothesToLoad;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Seller Inventory")
-		TArray<int32> _consumablesToLoad;
+	TArray<int32> _consumablesToLoad;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Seller Inventory")
-		TArray<int32> _othersToLoad;
+	TArray<int32> _othersToLoad;
 
 private:
 	// INVENTORY
 
 	UPROPERTY(VisibleAnywhere, Category = "Seller Inventory")
-		TArray<FWeaponStruct> _weapons;
+	TArray<FWeaponStruct> _weapons;
 
 	UPROPERTY(VisibleAnywhere, Category = "Seller Inventory")
-		TArray<FClothesStruct> _clothes;
+	TArray<FClothesStruct> _clothes;
 
 	UPROPERTY(VisibleAnywhere, Category = "Seller Inventory")
-		TArray<FConsumableStruct> _consumables;
+	TArray<FConsumableStruct> _consumables;
 
 	UPROPERTY(VisibleAnywhere, Category = "Seller Inventory")
-		TArray<FItemStruct> _others;
+	TArray<FItemStruct> _others;
 
 	UDataTable* _weaponsTable;
 	UDataTable* _clothesTable;
